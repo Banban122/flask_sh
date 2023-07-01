@@ -6,15 +6,15 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 # Corn job import
-import time
-import atexit
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.triggers.cron import CronTrigger
+from flask_apscheduler import APScheduler
 # end
 
 app = Flask(__name__)
 # freezer=Freezer(app)
-# "postgresql://kkqrgbst:rc4beJBMClJJiJHixihVx2ivILke0znR@arjuna.db.elephantsql.com/kkqrgbst"
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:M7jpHdxtA)zgS:@db.vokuijthdfhireeekrzg.supabase.co:6543/postgres'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '1192b6f912b6e07ab9fb30tf'
@@ -29,16 +29,11 @@ class Creds(db.Model):
         return f"<Creds index {self.id}> "
 
 
+@scheduler.task('interval', id='cornJb', seconds=43200, misfire_grace_time=900)
 def cornJb():
-    print(dt.datetime.now())
-    Creds.query.filter_by(id=2).first().inf=f"{dt.datetime.now()})"
-    db.session.commit()
-
-
-scheduler = BackgroundScheduler()
-scheduler.add_job(func=cornJb, trigger="interval", seconds=7)
-scheduler.start()
-#atexit.register(lambda: scheduler.shutdown())
+    with app.app_context():
+        Creds.query.filter_by(id=2).first().inf = f"{dt.datetime.now()}"
+        db.session.commit()
 
 
 @app.route('/')
