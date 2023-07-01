@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 # freezer=Freezer(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://kkqrgbst:rc4beJBMClJJiJHixihVx2ivILke0znR@arjuna.db.elephantsql.com/kkqrgbst"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:M7jpHdxtA)zgS:@db.vokuijthdfhireeekrzg.supabase.co:6543/postgres'#"postgresql://kkqrgbst:rc4beJBMClJJiJHixihVx2ivILke0znR@arjuna.db.elephantsql.com/kkqrgbst"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '1192b6f912b6e07ab9fb30tf'
 db = SQLAlchemy(app)
